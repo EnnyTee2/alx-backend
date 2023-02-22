@@ -6,10 +6,7 @@ BaseCaching = __import__('base_caching').BaseCaching
 
 class BasicCache(BaseCaching):
     ''' Basic Caching Class '''
-    def __init__(self):
-        ''' init method to call parent class's __init__'''
-        super.__init__(self)
-    
+
     def put(self, key, item):
         ''' put method for putting a new key and item '''
         if key is None or item is None:
