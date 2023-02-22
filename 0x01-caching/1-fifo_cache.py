@@ -10,7 +10,10 @@ class FIFOCache(BaseCaching):
         super().__init__()
 
     def put(self, key, item):
-        ''' Add an item to the cache'''
+        ''' Adds an item to the cache
+            Removes first item if cache size is
+            greater than BaseCaching.MAX_ITEMS
+        '''
         if key and item:
             self.cache_data[key] = item
             if len(self.cache_data) > BaseCaching.MAX_ITEMS:
