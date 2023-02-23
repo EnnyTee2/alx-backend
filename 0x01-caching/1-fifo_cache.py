@@ -22,4 +22,3 @@ class FIFOCache(BaseCaching):
     def get(self, key):
         '''get an item with specified key from cache'''
         return self.cache_data.get(key)
-    
