@@ -30,7 +30,6 @@ class LIFOCache(BaseCaching):
             self.cache_data[key] = item
             self.last_key = key
 
-
     def get(self, key):
         '''get an item with specified key from cache'''
         return self.cache_data.get(key)
