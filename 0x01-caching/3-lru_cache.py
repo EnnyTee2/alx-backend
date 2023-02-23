@@ -1,39 +1,51 @@
-#!/usr/bin/python3
-""" LIFO caching """
-
-BaseCaching = __import__('base_caching').BaseCaching
+#!/usr/bin/env python3
+"""LRU caching"""
+from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
-    ''' Least Recently Used Caching System '''
+    """LRU Cache class definition
+    Args:
+        BaseCaching (obj): parent class
+    """
+
     def __init__(self):
         super().__init__()
-        self.key_usage = []
+        self.stack = []
 
     def put(self, key, item):
-        ''' Add an item to the cache
-            Remove last item if cache size is
-            greater than BaseCaching.MAX_ITEMS
-        '''
-        if key is not None and item is not None:
-            self.cache_data[key] = item
-            self.key_usage.append(key)
+        """add item to storage
+        Args:
+            key (str): key
+            item (str): corresponding value at key
+        """
+        if not key or not item:
+            return
 
-            updated = True if key in self.cache_data.keys() else False
-            if updated:
-                self.key_usage.remove(key)
-                return
+        updated = True if key in self.cache_data.keys() else False
 
-            if len(self.cache_data) > self.MAX_ITEMS:
-                del self.cache_data[self.key_usage[0]]
-                print(f"DISCARD: {self.key_usage[0]}")
-                del self.key_usage[0]
+        self.cache_data[key] = item
 
-        return
+        self.stack.append(key)
+
+        if updated:
+            self.stack.remove(key)
+            return
+
+        if len(self.cache_data) > self.MAX_ITEMS:
+            del self.cache_data[self.stack[0]]
+            print(f'DISCARD: {self.stack[0]}')
+            del self.stack[0]
 
     def get(self, key):
-        '''get an item with specified key from cache'''
-        if key in self.cache_data:
-            self.key_usage.append(key)
-            self.key_usage.remove(key)
+        """get value at key
+        Args:
+            key (str): key
+        Returns:
+            str: value if successful else None
+        """
+        if key in self.cache_data.keys():
+            self.stack.append(key)
+            self.stack.remove(key)
+
         return self.cache_data.get(key)
