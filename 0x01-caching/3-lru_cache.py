@@ -29,7 +29,7 @@ class LRUCache(BaseCaching):
         if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
             if key not in self.cache_data:
                 min = self.get_min(self.key_usage)
-                for k,value in self.key_usage.items():
+                for k, value in self.key_usage.items():
                     if value == min:
                         del self.cache_data[k]
                         print(f"DISCARD: {k}")
