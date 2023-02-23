@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" LIFO caching """
+""" MRU caching """
 
 BaseCaching = __import__('base_caching').BaseCaching
 
@@ -27,18 +27,18 @@ class MRUCache(BaseCaching):
             self.key_usage[key] = self.counter
         if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
             if key not in self.cache_data:
-                max = self.get_max(self.key_usage)
+                mru = self.get_mru(self.key_usage) - 1
                 for k, value in self.key_usage.items():
-                    if value == max:
+                    if value == mru:
                         del self.cache_data[k]
                         print(f"DISCARD: {k}")
                         del self.key_usage[k]
                         break
         self.cache_data[key] = item
 
-    def get_max(self, dico):
+    def get_mru(self, dico):
         ''' gets the MRU key from a dictionary '''
-            return max(dico.values())
+        return max(dico.values())
 
     def get(self, key):
         '''gets an item with specified key from cache'''
