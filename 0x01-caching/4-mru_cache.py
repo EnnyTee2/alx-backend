@@ -38,9 +38,7 @@ class MRUCache(BaseCaching):
 
     def get_max(self, dico):
         ''' gets the MRU key from a dictionary '''
-        if len(dico) > 1:
-            return max(dico.values()) - 1
-        return max(dico.values())
+            return max(dico.values())
 
     def get(self, key):
         '''gets an item with specified key from cache'''
