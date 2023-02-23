@@ -39,7 +39,7 @@ class LRUCache(BaseCaching):
 
     def get_min(self, dico):
         ''' gets the LRU key from a dictionary '''
-        return min(sorted(dico.values()))
+        return min(dico.values())
 
     def get(self, key):
         '''gets an item with specified key from cache'''
