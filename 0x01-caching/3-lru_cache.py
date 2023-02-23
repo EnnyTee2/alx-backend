@@ -1,51 +1,51 @@
-#!/usr/bin/env python3
-"""LRU caching"""
-from base_caching import BaseCaching
+#!/usr/bin/python3
+""" LIFO caching """
+
+BaseCaching = __import__('base_caching').BaseCaching
 
 
 class LRUCache(BaseCaching):
-    """LRU Cache class definition
-    Args:
-        BaseCaching (obj): parent class
-    """
-
+    ''' Least Recently Used Caching System '''
     def __init__(self):
+        self.key_usage = {}
+        self.counter = 0
+        self.cache_data = {}
         super().__init__()
-        self.stack = []
 
     def put(self, key, item):
-        """add item to storage
-        Args:
-            key (str): key
-            item (str): corresponding value at key
-        """
-        if not key or not item:
+        ''' Adds an item to the cache
+            Removes last item if cache size is
+            greater than BaseCaching.MAX_ITEMS
+        '''
+        if key is None or item is None:
             return
 
-        updated = True if key in self.cache_data.keys() else False
+        if self.counter < 1:
+            self.key_usage[key] = self.counter
+        else:
+            self.counter += 1
+            self.key_usage[key] = self.counter
 
+        if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+            if key not in self.cache_data:
+                min = self.get_min(self.key_usage)
+                for k,value in self.key_usage.items():
+                    if value == min:
+                        del self.cache_data[k]
+                        print(f"DISCARD: {k}")
+                        del self.key_usage[k]
+                        break
         self.cache_data[key] = item
 
-        self.stack.append(key)
-
-        if updated:
-            self.stack.remove(key)
-            return
-
-        if len(self.cache_data) > self.MAX_ITEMS:
-            del self.cache_data[self.stack[0]]
-            print(f'DISCARD: {self.stack[0]}')
-            del self.stack[0]
+    def get_min(self, dico):
+        ''' gets the LRU key from a dictionary '''
+        return min(sorted(dico.values()))
 
     def get(self, key):
-        """get value at key
-        Args:
-            key (str): key
-        Returns:
-            str: value if successful else None
-        """
-        if key in self.cache_data.keys():
-            self.stack.append(key)
-            self.stack.remove(key)
+        '''gets an item with specified key from cache'''
+        if key not in self.cache_data:
+            return None
 
+        self.counter += 1
+        self.key_usage[key] = self.counter
         return self.cache_data.get(key)
